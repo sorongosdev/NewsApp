@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sorongos.newsapp.databinding.ActivityMainBinding
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,9 +42,26 @@ class MainActivity : AppCompatActivity() {
         newsService.mainFeed().enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
                 Log.e("MainActivity", "${response.body()?.channel?.items}")
-                newsAdapter.submitList(
-                    response.body()?.channel?.items.orEmpty()
-                )
+
+                val list =
+                    response.body()?.channel?.items.orEmpty().transform() //newsItem -> newsmodel
+                newsAdapter.submitList(list)
+
+                list.forEach {
+                    //not allowed to control network in the main thread.
+                    Thread {
+                        val item = list.first()
+
+                        val jsoup = Jsoup.connect(item.link).get() // link, document type
+                        //meta 태그를 찾고 og:~ property를 찾음
+                        val elements = jsoup.select("meta[property^=og:]")
+                        val ogImageNode = elements.find { node ->
+                            node.attr("property") == "og:image"
+                        }
+
+                        it.imageUrl = ogImageNode?.attr("content")
+                    }.start()
+                }
             }
 
             override fun onFailure(call: Call<NewsRss>, t: Throwable) {
