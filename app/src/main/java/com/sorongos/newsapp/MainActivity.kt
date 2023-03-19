@@ -43,27 +43,52 @@ class MainActivity : AppCompatActivity() {
         binding.politicsChip.setOnClickListener {
             binding.chipGroup.clearCheck()
             binding.politicsChip.isChecked = true
+
+            newsService.politicsNews().submitList()
         }
         binding.economicsChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.economicsChip.isChecked = true
 
+            newsService.economicsNews().submitList()
         }
         binding.socialChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.socialChip.isChecked = true
 
+            newsService.socialNews().submitList()
         }
         binding.globalChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.globalChip.isChecked = true
 
+            newsService.globalNews().submitList()
         }
         binding.sportsChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.sportsChip.isChecked = true
 
+            newsService.sportsNews().submitList()
         }
         binding.entertainChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.entertainChip.isChecked = true
 
+            newsService.entertainNews().submitList()
         }
         binding.lifeChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.lifeChip.isChecked = true
 
+            newsService.lifeNews().submitList()
         }
 
-        newsService.politicsNews().enqueue(object : Callback<NewsRss> {
+        newsService.politicsNews().submitList()
+    }
+
+    private fun Call<NewsRss>.submitList(){
+        //call newsRss
+        enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
                 Log.e("MainActivity", "${response.body()?.channel?.items}")
 
@@ -105,8 +130,5 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-    }
-    private fun Call<NewsRss>.submitList(){
-
     }
 }
