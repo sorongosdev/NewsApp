@@ -5,7 +5,13 @@
 
 ## SBS RSS 링크 모음
 - 링크 모음 : https://news.sbs.co.kr/news/rss.do
+
+- 최신 피드 : https://news.sbs.co.kr/news/newsflash.do?plink=SNB&cooper=SBSNEWS
+- 최신 rss : https://news.sbs.co.kr/news/ ???
+
+- 정치 원래 링크 : https://news.sbs.co.kr/news/newsSection.do?sectionType=01&plink=SNB&cooper=SBSNEWS
 - 정치 : https://news.sbs.co.kr/news/SectionRssFeed.do?sectionId=01&plink=RSSREADER
+
 - 경제 : https://news.sbs.co.kr/news/SectionRssFeed.do?sectionId=02&plink=RSSREADER
 - 사회 : https://news.sbs.co.kr/news/SectionRssFeed.do?sectionId=03&plink=RSSREADER
 - 생활/문화 : https://news.sbs.co.kr/news/SectionRssFeed.do?sectionId=07&plink=RSSREADER

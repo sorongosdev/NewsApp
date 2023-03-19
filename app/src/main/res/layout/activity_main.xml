@@ -22,47 +22,40 @@
             android:paddingEnd="10dp">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/politicsChip"
+                android:id="@+id/mainFeedChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="정치" />
+                android:text="피드" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/economicsChip"
+                android:id="@+id/koreaChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="경제" />
+                android:text="대한민국" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/socialChip"
+                android:id="@+id/localChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="사회" />
+                android:text="지역" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/lifeChip"
+                android:id="@+id/scienceChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="생활/문화" />
+                android:text="과학" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/globalChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="국제/글로벌" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/entertainChip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="연예/방송" />
+                android:text="세계" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/sportsChip"
@@ -70,6 +63,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="스포츠" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/businessChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비즈니스" />
 
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

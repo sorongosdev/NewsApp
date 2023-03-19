@@ -1,8 +1,11 @@
 package com.sorongos.newsapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sorongos.newsapp.databinding.ActivityMainBinding
 import com.tickaroo.tikxml.TikXml
@@ -17,8 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var newsAdapter: NewsAdapter
     private val retrofit = Retrofit.Builder()
-//        .baseUrl("https://news.google.com/")
-        .baseUrl("https://news.sbs.co.kr/news/")
+        .baseUrl("https://news.google.com/")
+//        .baseUrl("https://news.sbs.co.kr/news/")
         .addConverterFactory(
             TikXmlConverterFactory.create(
                 TikXml.Builder()
@@ -40,23 +43,17 @@ class MainActivity : AppCompatActivity() {
             adapter = newsAdapter
         }
 
-        binding.politicsChip.setOnClickListener {
+        binding.mainFeedChip.setOnClickListener {
             binding.chipGroup.clearCheck()
-            binding.politicsChip.isChecked = true
+            binding.mainFeedChip.isChecked = true
 
-            newsService.politicsNews().submitList()
+            newsService.mainFeed().submitList()
         }
-        binding.economicsChip.setOnClickListener {
+        binding.koreaChip.setOnClickListener {
             binding.chipGroup.clearCheck()
-            binding.economicsChip.isChecked = true
+            binding.koreaChip.isChecked = true
 
-            newsService.economicsNews().submitList()
-        }
-        binding.socialChip.setOnClickListener {
-            binding.chipGroup.clearCheck()
-            binding.socialChip.isChecked = true
-
-            newsService.socialNews().submitList()
+            newsService.koreaNews().submitList()
         }
         binding.globalChip.setOnClickListener {
             binding.chipGroup.clearCheck()
@@ -70,23 +67,45 @@ class MainActivity : AppCompatActivity() {
 
             newsService.sportsNews().submitList()
         }
-        binding.entertainChip.setOnClickListener {
-            binding.chipGroup.clearCheck()
-            binding.entertainChip.isChecked = true
 
-            newsService.entertainNews().submitList()
-        }
-        binding.lifeChip.setOnClickListener {
+        binding.scienceChip.setOnClickListener {
             binding.chipGroup.clearCheck()
-            binding.lifeChip.isChecked = true
+            binding.scienceChip.isChecked = true
 
-            newsService.lifeNews().submitList()
+            newsService.scienceNews().submitList()
         }
 
-        newsService.politicsNews().submitList()
+        binding.businessChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.businessChip.isChecked = true
+
+            newsService.businessNews().submitList()
+        }
+
+        //자판의 엔터버튼 리스너 - 검색
+        binding.searchTextInputEditText.setOnEditorActionListener { view, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.chipGroup.clearCheck()
+
+                //remove focus
+                binding.searchTextInputEditText.clearFocus()
+
+                //키보드 닫아줌
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken,0)
+
+                newsService.search(binding.searchTextInputEditText.text.toString()).submitList()
+
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
+        //default
+        newsService.mainFeed().submitList()
     }
 
-    private fun Call<NewsRss>.submitList(){
+    private fun Call<NewsRss>.submitList() {
         //call newsRss
         enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
@@ -105,12 +124,12 @@ class MainActivity : AppCompatActivity() {
 
                             //meta 태그를 찾고 og:~ property를 찾음
                             val elements = jsoup.select("meta[property^=og:]")
-                            Log.e("Main","elements : $elements")
+                            Log.e("Main", "elements : $elements")
 
                             val ogImageNode = elements.find { node ->
                                 node.attr("property") == "og:image"
                             }
-                            Log.e("Main","ogImageNode : $ogImageNode")
+                            Log.e("Main", "ogImageNode : $ogImageNode")
 
                             news.imageUrl = ogImageNode?.attr("content")
                             Log.e("MainActivity", "imageUrl: ${news.imageUrl}")
