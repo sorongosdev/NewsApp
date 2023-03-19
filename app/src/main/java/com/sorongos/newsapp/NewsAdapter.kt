@@ -13,7 +13,7 @@ class NewsAdapter : ListAdapter<NewsModel, NewsAdapter.ViewHolder>(diffUtil) {
 
         fun bind(item: NewsModel) {
             binding.titleTextView.text = item.title
-            binding.thumbnailImageView
+            item.imageUrl
         }
     }
 
