@@ -40,7 +40,30 @@ class MainActivity : AppCompatActivity() {
             adapter = newsAdapter
         }
 
-        newsService.mainFeed().enqueue(object : Callback<NewsRss> {
+        binding.politicsChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.politicsChip.isChecked = true
+        }
+        binding.economicsChip.setOnClickListener {
+
+        }
+        binding.socialChip.setOnClickListener {
+
+        }
+        binding.globalChip.setOnClickListener {
+
+        }
+        binding.sportsChip.setOnClickListener {
+
+        }
+        binding.entertainChip.setOnClickListener {
+
+        }
+        binding.lifeChip.setOnClickListener {
+
+        }
+
+        newsService.politicsNews().enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
                 Log.e("MainActivity", "${response.body()?.channel?.items}")
 
@@ -82,5 +105,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+    private fun Call<NewsRss>.submitList(){
+
     }
 }
