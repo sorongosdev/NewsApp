@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var newsAdapter: NewsAdapter
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://news.google.com/")
+//        .baseUrl("https://news.google.com/")
+        .baseUrl("https://news.sbs.co.kr/news/")
         .addConverterFactory(
             TikXmlConverterFactory.create(
                 TikXml.Builder()
@@ -32,13 +33,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         newsAdapter = NewsAdapter()
+        val newsService = retrofit.create(NewsService::class.java)
 
         binding.newsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
         }
 
-        val newsService = retrofit.create(NewsService::class.java)
         newsService.mainFeed().enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
                 Log.e("MainActivity", "${response.body()?.channel?.items}")
@@ -47,19 +48,31 @@ class MainActivity : AppCompatActivity() {
                     response.body()?.channel?.items.orEmpty().transform() //newsItem -> newsmodel
                 newsAdapter.submitList(list)
 
-                list.forEach {
+                //list와 listAdapter의 index가 동일
+                list.forEachIndexed { index, news ->
                     //not allowed to control network in the main thread.
                     Thread {
-                        val item = list.first()
+                        try {
+                            val jsoup = Jsoup.connect(news.link).get() // link, document type
 
-                        val jsoup = Jsoup.connect(item.link).get() // link, document type
-                        //meta 태그를 찾고 og:~ property를 찾음
-                        val elements = jsoup.select("meta[property^=og:]")
-                        val ogImageNode = elements.find { node ->
-                            node.attr("property") == "og:image"
+                            //meta 태그를 찾고 og:~ property를 찾음
+                            val elements = jsoup.select("meta[property^=og:]")
+                            Log.e("Main","elements : $elements")
+
+                            val ogImageNode = elements.find { node ->
+                                node.attr("property") == "og:image"
+                            }
+                            Log.e("Main","ogImageNode : $ogImageNode")
+
+                            news.imageUrl = ogImageNode?.attr("content")
+                            Log.e("MainActivity", "imageUrl: ${news.imageUrl}")
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-
-                        it.imageUrl = ogImageNode?.attr("content")
+                        runOnUiThread {
+                            newsAdapter.notifyItemChanged(index)
+                        }
                     }.start()
                 }
             }

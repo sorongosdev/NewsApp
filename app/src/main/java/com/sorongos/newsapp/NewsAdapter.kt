@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.sorongos.newsapp.databinding.ItemNewsBinding
 
 class NewsAdapter : ListAdapter<NewsModel, NewsAdapter.ViewHolder>(diffUtil) {
@@ -13,7 +14,9 @@ class NewsAdapter : ListAdapter<NewsModel, NewsAdapter.ViewHolder>(diffUtil) {
 
         fun bind(item: NewsModel) {
             binding.titleTextView.text = item.title
-            item.imageUrl
+            Glide.with(binding.thumbnailImageView)
+                .load(item.imageUrl)
+                .into(binding.thumbnailImageView)
         }
     }
 
