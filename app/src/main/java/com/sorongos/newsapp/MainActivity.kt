@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sorongos.newsapp.databinding.ActivityMainBinding
 import com.tickaroo.tikxml.TikXml
@@ -121,6 +122,9 @@ class MainActivity : AppCompatActivity() {
                 val list =
                     response.body()?.channel?.items.orEmpty().transform() //newsItem -> newsmodel
                 newsAdapter.submitList(list)
+
+                //검색된 리스트가 없다면 결과없음창 띄움민
+                binding.notFoundView.isVisible = list.isEmpty()
 
                 //list와 listAdapter의 index가 동일
                 list.forEachIndexed { index, news ->

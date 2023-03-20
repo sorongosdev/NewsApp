@@ -79,22 +79,22 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chipGroupScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         app:endIconMode="clear_text"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chipGroupScrollView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1"
+            android:hint="검색어 입력"
             android:imeOptions="actionSearch"
-            android:hint="검색어 입력" />
+            android:inputType="text"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,4 +108,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
         tools:listitem="@layout/item_news" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/notFoundView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/search_not_found"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
