@@ -3,6 +3,8 @@
 
 ![img.png](img.png)
 ![img_1.png](img_1.png)
+## 추후 보완
+- retrofit object로 따로 빼기
 
 ## SBS RSS 링크 모음
 - 링크 모음 : https://news.sbs.co.kr/news/rss.do
