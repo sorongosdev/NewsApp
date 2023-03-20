@@ -8,12 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sorongos.newsapp.databinding.ItemNewsBinding
 
-class NewsAdapter : ListAdapter<NewsModel, NewsAdapter.ViewHolder>(diffUtil) {
+class NewsAdapter(private val onClick: (String) -> Unit) :
+    ListAdapter<NewsModel, NewsAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding: ItemNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: NewsModel) {
             binding.titleTextView.text = item.title
+            //card
+            binding.root.setOnClickListener {
+                onClick(item.link)
+            }
             Glide.with(binding.thumbnailImageView)
                 .load(item.imageUrl)
                 .into(binding.thumbnailImageView)
@@ -34,8 +39,8 @@ class NewsAdapter : ListAdapter<NewsModel, NewsAdapter.ViewHolder>(diffUtil) {
         holder.bind(currentList[position])
     }
 
-    companion object{
-        val diffUtil = object: DiffUtil.ItemCallback<NewsModel>(){
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<NewsModel>() {
             override fun areItemsTheSame(oldItem: NewsModel, newItem: NewsModel): Boolean {
                 return oldItem === newItem //hashcode까지 비교
             }

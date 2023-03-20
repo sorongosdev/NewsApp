@@ -1,6 +1,7 @@
 package com.sorongos.newsapp
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +36,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        newsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter { url ->
+            startActivity(
+                Intent(this, WebViewActivity::class.java).apply {
+                    putExtra("url", url)
+                }
+            )
+        }
         val newsService = retrofit.create(NewsService::class.java)
 
         binding.newsRecyclerView.apply {
@@ -84,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
         //자판의 엔터버튼 리스너 - 검색
         binding.searchTextInputEditText.setOnEditorActionListener { view, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.chipGroup.clearCheck()
 
                 //remove focus
@@ -92,7 +99,7 @@ class MainActivity : AppCompatActivity() {
 
                 //키보드 닫아줌
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken,0)
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
 
                 newsService.search(binding.searchTextInputEditText.text.toString()).submitList()
 
